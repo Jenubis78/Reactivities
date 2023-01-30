@@ -28,7 +28,7 @@ services.AddCors(opt =>
 
     opt.AddPolicy("CorsPolicy" , policy =>
     {
-        policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+        policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000").SetIsOriginAllowed((host) => true);
     });
 });
 services.AddMediatR(typeof(List.Handler));
