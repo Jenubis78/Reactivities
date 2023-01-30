@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Activity } from "../models/activity";
 
 const sleep = (delay: number) => {
@@ -18,7 +18,7 @@ axios.interceptors.response.use(async response => {
         return await Promise.reject(error);
     }
 })
-const responseBody = <T> (response:AxiosResponse) => response.data;
+const responseBody =  (response:AxiosResponse) => response.data;
 
 const requests = {
     get: <T>(url: string) => axios.get<T>(url).then(responseBody),
