@@ -18,7 +18,7 @@ axios.interceptors.response.use(async response => {
         return await Promise.reject(error);
     }
 })
-const responseBody =  (response:AxiosResponse) => response.data;
+const responseBody =  <T>(response:AxiosResponse<T>) => response.data;
 
 const requests = {
     get: <T>(url: string) => axios.get<T>(url).then(responseBody),
