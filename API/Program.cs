@@ -1,6 +1,6 @@
-using Persistence;
-using Microsoft.EntityFrameworkCore;
 using API.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,14 +24,14 @@ app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
-using var scope = app.Services.CreateScope ();
+using var scope = app.Services.CreateScope();
 
 var services = scope.ServiceProvider;
 
 try
 {
     var context = services.GetRequiredService<DataContext>();
-    await context.Database.EnsureCreatedAsync() ;
+    await context.Database.EnsureCreatedAsync();
     await context.Database.MigrateAsync();
     await Seed.SeedData(context);
     Console.Write('M');
@@ -39,7 +39,7 @@ try
 catch (Exception ex)
 {
     var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex,"Erreur Migration");
+    logger.LogError(ex, "Erreur Migration");
 }
 
 app.Run();
