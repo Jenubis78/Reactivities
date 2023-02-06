@@ -10,7 +10,7 @@ const sleep = (delay: number) => {
     })
 }
 
-axios.defaults.baseURL='http://localhost:5000/api';
+axios.defaults.baseURL='https://jenubis78-bookish-parakeet-w47jpw4764935q75-5000.preview.app.github.dev/api';
 
 axios.interceptors.response.use(async response => {
     

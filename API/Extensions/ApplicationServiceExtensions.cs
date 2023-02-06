@@ -12,13 +12,6 @@ public static class ApplicationServiceExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
     {
-<<<<<<< HEAD
-        policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000").SetIsOriginAllowed((host) => true);
-    });
-});
-services.AddMediatR(typeof(List.Handler));
-services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-=======
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -28,15 +21,14 @@ services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             opt.AddPolicy("CorsPolicy",
                 policy =>
                 {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000")
+                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("*")
                         .SetIsOriginAllowed(host => true);
-                });
+                }); //http://localhost:3000","https://jenubis78-bookish-parakeet-w47jpw4764935q75-5000.preview.app.github.dev
         });
         services.AddMediatR(typeof(List.Handler));
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<Create>();
->>>>>>> 032ac720cba9f5be79517c27b3eeb30572658ae4
 
         return services;
     }

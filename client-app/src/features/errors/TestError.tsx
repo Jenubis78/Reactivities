@@ -4,7 +4,7 @@ import axios from 'axios';
 import ValidationError from './ValidationError';
 
 export default function TestErrors() {
-    const baseUrl = 'http://localhost:5000/api/'
+    const baseUrl = 'https://jenubis78-bookish-parakeet-w47jpw4764935q75-5000.preview.app.github.dev/api/'
     const [errors,setErrors] = useState(null);
 
     function handleNotFound() {
