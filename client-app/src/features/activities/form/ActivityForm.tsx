@@ -12,25 +12,18 @@ import MyTextArea from '../../../app/common/form/MyTextArea';
 import MySelectInput from '../../../app/common/form/MySelectInput';
 import { categoryOptions } from '../../../app/common/options/CategoryOptions';
 import MyDateInput from '../../../app/common/form/MyDateInput';
-import { Activity } from '../../../app/models/activity';
+import { ActivityFormValues } from '../../../app/models/activity';
 
 
 export default observer(function ActivityForm() {
 
     const {activityStore} = useStore();
-    const {selectedActivity,createActivity,updateActivity,loading, loadActivity, loadingInitial} = activityStore;
+    const {createActivity,updateActivity,loadActivity, loadingInitial} = activityStore;
    
 const {id} = useParams();
 const navigate = useNavigate();
-    const [activity, setActivity] = useState<Activity>({
-        id: '',
-        title: '',
-        category: '',
-        description: '',
-        date: null,
-        city: '',
-        venue: ''});
-        
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
+       
 const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
     category: Yup.string().required('Category is required'),
@@ -40,15 +33,18 @@ const validationSchema = Yup.object({
     venue: Yup.string().required(),
 })
     useEffect(() => {
-        if (id) loadActivity(id).then(activity => setActivity(activity!))
+        if (id) loadActivity(id).then(activity => setActivity(new ActivityFormValues(activity)))
     },[id, loadActivity]);
 
 
-      function handleFormSubmit(activity: Activity) {
-         activity.id ? updateActivity(activity) : createActivity(activity);
+      function handleFormSubmit(activity: ActivityFormValues) {
          if (!activity.id) {
-             activity.id = uuid();
-             createActivity(activity).then(() => navigate(`/activities/${activity.id}`))
+            let newActivity = {
+                ...activity,
+                id:uuid()
+            };
+             
+             createActivity(newActivity).then(() => navigate(`/activities/${newActivity.id}`))
          }
          else {
              updateActivity(activity).then(() => navigate(`/activities/${activity.id}`))
@@ -76,7 +72,7 @@ const validationSchema = Yup.object({
       <Header content='Location Details' sub color='teal' />
     <MyTextInput placeholder='City'  name='city'  />
     <MyTextInput placeholder='Venue'  name='venue'  />
-    <Button disabled={isSubmitting||!dirty||!isValid} loading={loading} floated='right' positive type='submit' content='Submit' />
+    <Button disabled={isSubmitting||!dirty||!isValid} loading={isSubmitting} floated='right' positive type='submit' content='Submit' />
     <Button as={Link} to='/activities' floated='right' type='button' content='Cancel' />
 </Form>
 )}
