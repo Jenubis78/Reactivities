@@ -24,11 +24,11 @@ public static class ApplicationServiceExtensions
             opt.AddPolicy("CorsPolicy",
                 policy =>
                 {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("*")
+                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000").AllowCredentials()
                         .SetIsOriginAllowed(host => true);
                 }); //http://localhost:3000","https://jenubis78-bookish-parakeet-w47jpw4764935q75-5000.preview.app.github.dev
         });
-        services.AddMediatR(typeof(List.Handler));
+        services.AddMediatR(typeof(List.Handler).Assembly);
         services.AddAutoMapper(typeof(MappingProfiles).Assembly);
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<Create>();
@@ -36,6 +36,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IUserAccessor,UserAccessor>();
         services.AddScoped<IPhotoAccessor,PhotoAccessor>();
 services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+services.AddSignalR();
         return services;
     }
 }
