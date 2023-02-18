@@ -1,5 +1,4 @@
 import axios, {AxiosError, AxiosResponse } from "axios";
-import { request } from "http";
 import { toast } from "react-toastify";
 import { Activity, ActivityFormValues } from "../models/activity";
 import { Photo, Profile } from "../models/profiles";
@@ -95,7 +94,10 @@ const Profiles = {
         })
     },
     setMainPhoto: (id:string) => requests.post(`/photos/${id}/setMain`, {}),
-    deletePhoto: (id: string) => requests.del(`/photos/${id}`)
+    deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+   // updateProfile: (profile: Partial<Profile>) => request.put('/profiles', profile),
+    updateFollowing: (username: string) => requests.post( `/follow/${username}`, {}),
+    listFollowings: (username: string, predicate: string) => requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
 }
 const agent = {Activities,Account,Profiles}
 

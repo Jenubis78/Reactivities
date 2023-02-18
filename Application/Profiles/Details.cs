@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -20,8 +21,10 @@ namespace Application.Profiles
         {
         private readonly DataContext _context ;
         private readonly IMapper _mapper;
-            public Handler(DataContext context, IMapper mapper)
+        private readonly IUserAccessor _useraccessor;
+            public Handler(DataContext context, IMapper mapper, IUserAccessor useraccessor)
             {
+            _useraccessor = useraccessor;
             _mapper = mapper;
             _context = context;
             }
@@ -29,7 +32,7 @@ namespace Application.Profiles
             public async Task<Result<Profile>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _context.Users
-                .ProjectTo<Profile>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(x => x.Username == request.Username);
+                .ProjectTo<Profile>(_mapper.ConfigurationProvider, new{currentUsername= _useraccessor.GetUsername()}).SingleOrDefaultAsync(x => x.Username == request.Username);
 
                      return Result <Profile>.Success(user);
                      
